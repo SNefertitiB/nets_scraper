@@ -33,6 +33,20 @@ def list_players_links(players_page:str) -> zip:
 
     return players, urls
 
+def get_stats_from_table(player, table_soup):
+    p1 = table_soup.find('div', {'class': 'p1'})
+    p2 = table_soup.find('div', {'class': 'p2'})
+
+    stats_1_p = p1.find_all('p')             # bs4.element.ResultSet
+    stats_1 = [p.text for p in stats_1_p if p.text != '']
+
+    stats_2_p = p2.find_all('p')             # bs4.element.ResultSet
+    stats_2 = [p.text for p in stats_2_p if p.text != '']
+
+    stats = [player] + stats_1 + stats_2
+
+    return stats
+
 def get_player_rows(player_names, player_urls):
     rows = []
     for i in range(len(player_names)):
@@ -44,23 +58,15 @@ def get_player_rows(player_names, player_urls):
         if player_table is None:
             print(player)
         else:
-            p1 = player_table.find('div', {'class': 'p1'})
-            p2 = player_table.find('div', {'class': 'p2'})
+            stats = get_stats_from_table(player, player_table)
 
-            stats_1_p = p1.find_all('p')             # bs4.element.ResultSet
-            stats_1 = [p.text for p in stats_1_p if p.text != '']
-
-            stats_2_p = p2.find_all('p')             # bs4.element.ResultSet
-            stats_2 = [p.text for p in stats_2_p if p.text != '']
-
-            stats = [player] + stats_1 + stats_2
             rows.append(stats)
             """
+            BBR Note (01.09.2024):
             Currently we will block users sending requests to:
             ur sites more often than twenty requests in a minute.
-            01.09.2024
             """
-            sleep(5)
+            sleep(5)     # to avoid bot detection
     return rows
 
 

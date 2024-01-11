@@ -2,6 +2,9 @@
 
 ## About
 
+These scripts are being developed for my friend Doug, the writer of [City of Nets](https://cityofnets.wordpress.com/).
+Check out his blog if you are into basketball!
+
 ## Setting up the environment
 After cloning the repo, initial the environment:
 
